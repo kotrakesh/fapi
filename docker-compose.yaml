@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=apiaccess
+      - POSTGRES_PASSWORD=apipassword
+      - POSTGRES_DB=postgres
+  web:
+    build: .
+    command: sh -c "uvicorn app.main:app --reload --port=8000 --host=0.0.0.0"
+    ports:
+      - 8000:8000
+    env_file:
+      - .env  
+    depends_on:
+      - postgres  
+    volumes:
+      - ./app:/code/app    
+
+
+volumes:
+      postgres_data:

@@ -1,1 +1,2 @@
-#Fast Api API for posts
+# Fast Api API for posts
+## posts aw hosted n netlify
